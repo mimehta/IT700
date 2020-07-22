@@ -4,5 +4,5 @@ library(shiny)
 library(RColorBrewer)
 library(xtable)
 
-csvData <- read_csv("www/datasets_insurance.csv")
+csvData <- read_csv("data/datasets_insurance.csv")
 corrData <- cor(csvData)
