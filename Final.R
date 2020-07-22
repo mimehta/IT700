@@ -3,6 +3,20 @@ library(corrplot)
 library(RColorBrewer)
 library(xtable)
 
+library(ggplot2)
+histogram <- function(x1, x2, binwidth = 500, xlim = c(0, 70000)) {
+  df <- data.frame(
+    x = c(x1, x2),
+    g = c(rep("x1", length(x1)), rep("x2", length(x2)))
+  )
+  
+  ggplot(df, aes(x, fill = g)) +
+    geom_dotplot(binwidth = binwidth) +
+    scale_y_continuous(NULL, breaks = NULL) +
+    coord_fixed( xlim = xlim,ylim = c(0,30000))
+#    coord_cartesian(xlim = xlim, ylim = c(0,4000))
+}
+
 csvData <- read_csv("C:/00snhulocal/IT-700/finalP/datasets_26475_38092_insurance2.csv")
 txData <- read_csv("C:/00snhulocal/IT-700/finalP/datasets_26475_38092_insurance2.csv",
     col_types = cols(
@@ -16,8 +30,10 @@ txData <- read_csv("C:/00snhulocal/IT-700/finalP/datasets_26475_38092_insurance2
       insuranceclaim = col_factor()
     )
 )
+
 # check data
 head(txData)
+summary(txData)
 # find the NA
 colSums(is.na(csvData))
               
@@ -57,3 +73,12 @@ agesmokerData <- csvData[,c("age", "smoker", "charges")]
 ##  to be continue
 ageChargeVect2 <- unlist(lapply(seq(min(agesmokerData$age), max(agesmokerData$age) ) , function(n) c(mean(agesmokerData[agesmokerData$age == n & agesmokerData$smoker ==0,]$charges)) ) )
 
+ histogram(smokerData$charges,nonsmokerData$charges)
+ 
+tt<- csvData %>% count(smoker, sex, wt=charges)
+mm<- csvData %>% count(smoker, sex) %>%
+  full_join(tt, by = c("smoker","sex")) %>%
+  mutate("avg" = n.y/n.x)
+
+
+ 
