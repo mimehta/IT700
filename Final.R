@@ -69,7 +69,7 @@ boxplot(charges ~ sex + smoker, sexsmokerData, horizontal = F, notch = T,
         col = c("#226699","#FF5511"),outline=FALSE,names=c("","","","") )
 legend(1, 55000, c("female", "male"),  fill=c("#226699","#FF5511"))
 legend(1, 30000, c("non-smoker"),bg = "lightblue"  )
-legend(3.5, 5000, c("smoker"), bg = "lightred")
+legend(3.5, 5000, c("smoker"), bg = "#FFBB11")
 
 agesmokerData <- csvData[,c("age", "smoker", "charges")]
 
