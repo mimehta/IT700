@@ -61,15 +61,15 @@ boxplot(nonsmokerData$charges,smokerData$charges,
 plot(csvData[csvData$charges < 17000,c("age", "charges")], col = "blue4", main="relation of age and charge")
 sexsmokerData <- csvData[,c("sex", "smoker", "charges")]
 #### Not Used #####
-chargesSplit <- with(sexsmokerData, split(sexsmokerData, list(sex, smoker)))
-chargesList <- lapply(seq_along(chargesList), function(ls)  as.data.frame(chargesList[[ls]])[,3] )
+#chargesSplit <- with(sexsmokerData, split(sexsmokerData, list(sex, smoker)))
+#chargesList <- lapply(seq_along(chargesList), function(ls)  as.data.frame(chargesList[[ls]])[,3] )
 #### Not Used #####
 boxplot(charges ~ sex + smoker, sexsmokerData, horizontal = F, notch = T, 
                main="charges comparision for smoker- gender wise", at = c(1,2,3,4), 
         col = c("#226699","#FF5511"),outline=FALSE,names=c("","","","") )
 legend(1, 55000, c("female", "male"),  fill=c("#226699","#FF5511"))
 legend(1, 30000, c("non-smoker"),bg = "lightblue"  )
-legend(3.5, 5000, c("smoker"), bg = "#FFBB11")
+legend(3.5, 5000, c("smoker"), bg = "#FFBB77")
 
 agesmokerData <- csvData[,c("age", "smoker", "charges")]
 

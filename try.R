@@ -39,10 +39,10 @@ ui <- dashboardPage(
       ) ,
       
       # charts tab content
-      tabItem(tabName = "correlation",
+      tabItem(tabName = "charts",
               fluidRow(
                 box(plotOutput( "smokerComp"), width= 6,title = "Comparision of charges"),
-                box(tableOutput("smokercharts" ), width= 2,title = "Comparision of charges")
+                box(plotOutput("smokercharts" ), width= 6,title = "Comparision of charges")
               )
       )
     
@@ -64,19 +64,23 @@ server <- function(input, output, session) {
                                         options = list(info = F, paging = F,searching = F, lengthMenu = F) )
   output$sexCount <- renderTable(sexCount,options = list(info = F, paging = F,searching = F, lengthMenu = F))
   output$smokerCount <- renderTable(smokerCount,options = list(info = F, paging = F,searching = F, lengthMenu = F))
-  output$smokerComp <- boxplot(nonsmokerData$charges,smokerData$charges, 
+  output$smokerComp <- renderPlot(
+      expr = boxplot(nonsmokerData$charges,smokerData$charges, 
           at = c(1,2), col = c("blue","red"), 
           horizontal = T, notch = T, 
-          main="charges comparision", 
           names  = c("nonsmoker", "smoker"), 
-          xlab="charges")
-  output$smokercharts <- boxplot(charges ~ sex + smoker, sexsmokerData, horizontal = F, notch = T, 
+          xlab="charges") 
+      )
+  output$smokercharts <- renderPlot(
+  expr = {
+      boxplot(charges ~ sex + smoker, sexsmokerData, horizontal = F, notch = T, 
           main="charges comparision for smoker- gender wise", at = c(1,2,3,4), 
           col = c("#226699","#FF5511"),outline=FALSE,names=c("","","","") )
-  legend(1, 55000, c("female", "male"),  fill=c("#226699","#FF5511"))
-  legend(1, 30000, c("non-smoker"),bg = "lightblue"  )
-  legend(3.5, 5000, c("smoker"), bg = "#FFBB77")
-  
+      legend(1, 55000, c("female", "male"),  fill=c("#226699","#FF5511"))
+      legend(1, 30000, c("non-smoker"),bg = "lightblue"  )
+      legend(3.5, 5000, c("smoker"), bg = "#FFBB77")
+    }
+  )
   
 }
 

@@ -20,3 +20,5 @@ smokerData <- csvData %>% filter(smoker == 1)
 nonsmokerData <- csvData %>% filter(smoker == 0)
 smokerMean <- mean(smokerData$charges)
 nonsmokerMean <- mean(nonsmokerData$charges)
+
+sexsmokerData <- csvData[,c("sex", "smoker", "charges")]
