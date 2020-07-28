@@ -41,7 +41,7 @@ ui <- dashboardPage(
       # charts tab content
       tabItem(tabName = "charts",
               fluidRow(
-                box(plotOutput( "smokerComp"), width= 6,title = "Comparision of charges"),
+                box(plotOutput( "smokerComp"), width= 4,title = "Comparision of charges"),
                 box(plotOutput("smokercharts" ), width= 6,title = "Comparision of charges")
               )
       )
@@ -65,11 +65,15 @@ server <- function(input, output, session) {
   output$sexCount <- renderTable(sexCount,options = list(info = F, paging = F,searching = F, lengthMenu = F))
   output$smokerCount <- renderTable(smokerCount,options = list(info = F, paging = F,searching = F, lengthMenu = F))
   output$smokerComp <- renderPlot(
-      expr = boxplot(nonsmokerData$charges,smokerData$charges, 
-          at = c(1,2), col = c("blue","red"), 
-          horizontal = T, notch = T, 
+      expr = {
+        boxplot(nonsmokerData$charges,smokerData$charges, 
+          at = c(1,2), col = c("#226699","#FF5511"), 
+          horizontal = F, notch = T, outline=FALSE,
           names  = c("nonsmoker", "smoker"), 
-          xlab="charges") 
+          xlab="charges")
+      legend(0.5, 30000, c(   paste0("Mean:",smokerMean  ) ) , bg = "lightblue"  )
+      legend(1.5, 50000, c(   paste0("Mean:",nonsmokerMean  ) ) , bg = "lightblue"  )
+      }
       )
   output$smokercharts <- renderPlot(
   expr = {
@@ -78,7 +82,7 @@ server <- function(input, output, session) {
           col = c("#226699","#FF5511"),outline=FALSE,names=c("","","","") )
       legend(1, 55000, c("female", "male"),  fill=c("#226699","#FF5511"))
       legend(1, 30000, c("non-smoker"),bg = "lightblue"  )
-      legend(3.5, 5000, c("smoker"), bg = "#FFBB77")
+      legend(3.5, 5000, c("smoker"), bg = "lightblue")
     }
   )
   

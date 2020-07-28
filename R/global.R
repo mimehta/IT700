@@ -18,7 +18,9 @@ colnames(smokerCount) <- c("Type","Count")
 
 smokerData <- csvData %>% filter(smoker == 1)
 nonsmokerData <- csvData %>% filter(smoker == 0)
-smokerMean <- mean(smokerData$charges)
-nonsmokerMean <- mean(nonsmokerData$charges)
+smokerMean <- format(round(mean(smokerData$charges),2), nsmall = 2)
+nonsmokerMean <- format(round(mean(nonsmokerData$charges),2), nsmall = 2) 
 
 sexsmokerData <- csvData[,c("sex", "smoker", "charges")]
+
+agesmokerData <- csvData[,c("age", "smoker", "charges")]

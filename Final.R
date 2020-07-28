@@ -53,10 +53,11 @@ abline(csvData$smoker, csvData$charges)
 
 boxplot(nonsmokerData$charges,smokerData$charges, 
         at = c(1,2), col = c("blue","red"), 
-        horizontal = T, notch = T, 
+        horizontal = F, notch = T, 
         main="charges comparision", 
         names  = c("nonsmoker", "smoker"), 
         xlab="charges")
+legend(1, 30000, c(   paste0("Mean:",mean(smokerData$charges)  ) ) , bg = "lightblue"  )
 
 plot(csvData[csvData$charges < 17000,c("age", "charges")], col = "blue4", main="relation of age and charge")
 sexsmokerData <- csvData[,c("sex", "smoker", "charges")]
@@ -82,6 +83,19 @@ tt<- csvData %>% count(smoker, sex, wt=charges)
 mm<- csvData %>% count(smoker, sex) %>%
   full_join(tt, by = c("smoker","sex")) %>%
   mutate("avg" = n.y/n.x)
+#          fill_color="#036564", line_color="#033649")
+smoker18 <- agesmokerData[agesmokerData$age == 40 & agesmokerData$smoker == 1,]
+nonsmoker18 <- agesmokerData[agesmokerData$age == 40 & agesmokerData$smoker == 0,]
 
-
+boxplot(nonsmoker18$charges,smoker18$charges, 
+        at = c(1,2), col = c("blue","red"), 
+        horizontal = F, notch = F, 
+        main="charges comparision", 
+        names  = c("nonsmoker", "smoker"), 
+        xlab="charges")
+plot(agesmokerData$age, agesmokerData$charges, col=c("#226699","#FF5511")[agesmokerData$smoker + 1])
+legend(17, 60000, c("non-smoker","smoker"),fill = c("#226699","#FF5511")  )
+boxplot(charges ~ age + smoker, agesmokerData, horizontal = F, notch = F, 
+        main="charges comparision for smoker- gender wise", at = 1:94, 
+        col = c("#226699","#FF5511"),outline=FALSE )
  
