@@ -43,6 +43,12 @@ ui <- dashboardPage(
               fluidRow(
                 box(plotOutput( "smokerComp"), width= 4,title = "Comparision of charges"),
                 box(plotOutput("smokercharts" ), width= 6,title = "Comparision of charges")
+              ),
+              fluidRow(
+                box(plotOutput("scatter")),
+                box(  sliderInput("age", "Age:", min = min(csvData$age),max =  max(csvData$age), value = 18,),
+                      plotOutput("ageSmoker")
+                  )
               )
       )
     
@@ -84,6 +90,31 @@ server <- function(input, output, session) {
       legend(1, 30000, c("non-smoker"),bg = "lightblue"  )
       legend(3.5, 5000, c("smoker"), bg = "lightblue")
     }
+  )
+  output$scatter <- renderPlot(
+    {
+      plot(agesmokerData$age, agesmokerData$charges,pch=16, col=c("#226699","#FF5511")[agesmokerData$smoker + 1])
+      legend(17, 60000, c("non-smoker","smoker"),fill = c("#226699","#FF5511")  )
+      
+      abline(lm(charges ~ age, data = filter(agesmokerData,smoker ==0)),col ="#226699"  )
+      abline(lm(charges ~ age, data = filter(agesmokerData,smoker ==1)) , col= "#FF5511")
+    }
+  )
+  agesmok <- reactive(agesmokerData[agesmokerData$age == input$age & agesmokerData$smoker == 1,]$charges)
+  agenonsmok <- reactive(agesmokerData[agesmokerData$age == input$age & agesmokerData$smoker == 0,]$charges)
+  output$ageSmoker <- renderPlot(
+    {
+      boxplot(agenonsmok(),agesmok(), 
+              at = c(1,2), col = c("#226699","#FF5511"), 
+              horizontal = F, notch = F, outline = F,
+              main="charges comparision", 
+              names  = c("nonsmoker", "smoker"), 
+              xlab="charges")
+      legend(1, 30000, paste0("Diff:",round(mean(agesmok()) - mean(agenonsmok()) , digits = 2)),bg = "#FF5511"  )
+      legend(0.8, 20000, paste0("mean:",round(mean(agenonsmok()) , digits = 2)),bg = "lightblue"  )
+      legend(1.6, 10000, paste0("mean:",round(mean(agesmok()) , digits = 2)),bg = "lightblue"  )
+      
+      }
   )
   
 }

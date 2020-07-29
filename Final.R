@@ -89,12 +89,22 @@ nonsmoker18 <- agesmokerData[agesmokerData$age == 40 & agesmokerData$smoker == 0
 
 boxplot(nonsmoker18$charges,smoker18$charges, 
         at = c(1,2), col = c("blue","red"), 
-        horizontal = F, notch = F, 
+        horizontal = F, notch = F, outline = F,
         main="charges comparision", 
         names  = c("nonsmoker", "smoker"), 
         xlab="charges")
-plot(agesmokerData$age, agesmokerData$charges, col=c("#226699","#FF5511")[agesmokerData$smoker + 1])
+legend(0.8, 20000, paste0("mean:",round(mean(smoker18$charges) , digits = 2)),bg = "lightblue"  )
+legend(1.6, 10000, paste0("mean:",round(mean(nonsmoker18$charges) , digits = 2)),bg = "lightblue"  )
+
+
+plot(agesmokerData$age, agesmokerData$charges,pch=16, col=c("#226699","#FF5511")[agesmokerData$smoker + 1])
 legend(17, 60000, c("non-smoker","smoker"),fill = c("#226699","#FF5511")  )
+
+abline(lm(charges ~ age, data = filter(agesmokerData,smoker ==0)),col ="#226699"  )
+abline(lm(charges ~ age, data = filter(agesmokerData,smoker ==1)) , col= "#FF5511")
+
+
+#lines(filter(agesmokerData,smoker ==0)$age, filter(agesmokerData,smoker ==0)$charges)
 boxplot(charges ~ age + smoker, agesmokerData, horizontal = F, notch = F, 
         main="charges comparision for smoker- gender wise", at = 1:94, 
         col = c("#226699","#FF5511"),outline=FALSE )
