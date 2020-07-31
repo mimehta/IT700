@@ -4,6 +4,7 @@ library(shiny)
 library(RColorBrewer)
 library(xtable)
 library(shinydashboard)
+library(beanplot)
 
 csvData <- read_csv("data/datasets_insurance.csv")
 corrData <- cor(csvData)

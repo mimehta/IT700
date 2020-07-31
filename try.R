@@ -1,6 +1,6 @@
 
 ui <- dashboardPage(
-  dashboardHeader(title = "Medical charges"),
+  dashboardHeader(title = "Medical charges",disable = F),
   dashboardSidebar(
     sidebarMenu(
       menuItem("Introduction", tabName = "dashboard", icon = icon("info"),selected = T ),
@@ -104,15 +104,17 @@ server <- function(input, output, session) {
   agenonsmok <- reactive(agesmokerData[agesmokerData$age == input$age & agesmokerData$smoker == 0,]$charges)
   output$ageSmoker <- renderPlot(
     {
-      boxplot(agenonsmok(),agesmok(), 
-              at = c(1,2), col = c("#226699","#FF5511"), 
-              horizontal = F, notch = F, outline = F,
+      beanplot(agenonsmok(),agesmok(), 
+              at = c(1,2), col = list("#226699","#FF5511"),  what = c(1,1,1,0),side = "both",
+              horizontal = F, notch = F, outline = F,axes = T,
               main="charges comparision", 
-              names  = c("nonsmoker", "smoker"), 
-              xlab="charges")
-      legend(1, 30000, paste0("Diff:",round(mean(agesmok()) - mean(agenonsmok()) , digits = 2)),bg = "#FF5511"  )
-      legend(0.8, 20000, paste0("mean:",round(mean(agenonsmok()) , digits = 2)),bg = "lightblue"  )
-      legend(1.6, 10000, paste0("mean:",round(mean(agesmok()) , digits = 2)),bg = "lightblue"  )
+              names  = c("",""), 
+              ylab="charges", xlab="nonsmoker:smoker")
+      legend(0.5, 50000, c("non-smoker","smoker"),fill = c("#226699","#FF5511")  )
+      
+#      legend(1, 30000, paste0("Diff:",round(mean(agesmok()) - mean(agenonsmok()) , digits = 2)),bg = "#FF5511"  )
+#      legend(0.8, 20000, paste0("mean:",round(mean(agenonsmok()) , digits = 2)),bg = "lightblue"  )
+#      legend(1.6, 10000, paste0("mean:",round(mean(agesmok()) , digits = 2)),bg = "lightblue"  )
       
       }
   )

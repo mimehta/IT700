@@ -2,6 +2,7 @@ library(tidyverse)
 library(corrplot)
 library(RColorBrewer)
 library(xtable)
+library(beanplot)
 
 library(ggplot2)
 histogram <- function(x1, x2, binwidth = 500, xlim = c(0, 70000)) {
@@ -86,6 +87,14 @@ mm<- csvData %>% count(smoker, sex) %>%
 #          fill_color="#036564", line_color="#033649")
 smoker18 <- agesmokerData[agesmokerData$age == 40 & agesmokerData$smoker == 1,]
 nonsmoker18 <- agesmokerData[agesmokerData$age == 40 & agesmokerData$smoker == 0,]
+
+beanplot(nonsmoker18$charges,smoker18$charges, what = c(1,1,1,0),side = "both",
+        at = c(1,2), col = list("blue","red"), beanlinewd=4,
+        horizontal = F, notch = F, outline = F,
+        main="charges comparision", 
+        names  = c("nonsmoker", "smoker"), 
+        xlab="charges")
+
 
 boxplot(nonsmoker18$charges,smoker18$charges, 
         at = c(1,2), col = c("blue","red"), 
