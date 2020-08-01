@@ -12,6 +12,7 @@ sexCount <- table(csvData$sex)
 names(sexCount) <- c("F","M")
 sexCount<- as.data.frame(sexCount)
 colnames(sexCount) <- c("Gender","Count")
+
 smokerCount <- table(csvData$smoker)
 names(smokerCount) <- c("non-smoker","smoker")
 smokerCount<- as.data.frame(smokerCount)

@@ -51,6 +51,10 @@ mean(nonsmokerData$charges)
 hist(smokerData$charges, col = "orange", main="charges for smoker", xlab="Charges in $", ylab="# of cases")
 hist(nonsmokerData$charges, col = "orange", main="charges for nonsmoker", xlab="Charges in $", ylab="# of cases")
 abline(csvData$smoker, csvData$charges)
+library("GGally")
+
+
+barplot(table(csvData$sex, csvData$age), beside = T)
 
 boxplot(nonsmokerData$charges,smokerData$charges, 
         at = c(1,2), col = c("blue","red"), 

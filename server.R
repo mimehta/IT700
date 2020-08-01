@@ -10,7 +10,7 @@ server <- function(input, output, session) {
     renderPlot(corrplot(corrData, method = "square", diag = F))
   output$dataTable <-
     renderDataTable(
-      csvData[, 1:6],
+      csvData[, 1:7],
       searchDelay = 1000,
       options = list(
         pageLength = 5,
@@ -28,6 +28,30 @@ server <- function(input, output, session) {
                       searching = F,
                       lengthMenu = F
                     ))
+  output$femaleCount <- renderInfoBox(
+    infoBox(
+      "#Female", sexCount[1,2] , icon = icon("female"),
+      color = "aqua", fill = TRUE
+    )
+  ) 
+  output$maleCount <- renderInfoBox(
+    infoBox(
+      "#Male", sexCount[2,2] , icon = icon("male"),
+      color = "orange", fill = TRUE
+    )
+  ) 
+  output$smokerCount <- renderInfoBox(
+    infoBox(
+      "#Smoker", smokerCount[2,2] , icon = icon("smoking"),
+      color = "teal", fill = TRUE,subtitle = "das"
+    )
+  ) 
+  output$nonSmokerCount <- renderInfoBox(
+    infoBox(
+      "#non-smoker", smokerCount[1,2] , icon = icon("smoking-ban"),
+      color = "maroon", fill = TRUE
+    )
+  ) 
   output$sexCount <-
     renderTable(sexCount,
                 options = list(
@@ -36,7 +60,7 @@ server <- function(input, output, session) {
                   searching = F,
                   lengthMenu = F
                 ))
-  output$smokerCount <-
+  output$smokerCount1 <-
     renderTable(smokerCount,
                 options = list(
                   info = F,
@@ -106,7 +130,7 @@ server <- function(input, output, session) {
       what = c(1, 1, 1, 0),
       side = "both",
       horizontal = F,
-      notch = F,
+      notch = F, 
       outline = F,
       axes = T,
       main = "charges comparision",
@@ -125,4 +149,11 @@ server <- function(input, output, session) {
     
   })
   
+  output$chargeDiff <- renderInfoBox(
+    infoBox(
+      title = paste0("age#", input$age) , 
+      value = round(mean(agesmok()) - mean(agenonsmok()),digits=2),color = "red",
+        icon = icon("arrow-alt-circle-up")
+    )
+  )
 }

@@ -25,18 +25,28 @@ chartMenu <- menuItem(
 introTab <- tabItem(
   tabName = "dashboard",
   fluidRow(
-    box(includeHTML("www/include.html"), width = 12, background = "light-blue")
+    box(includeHTML("www/include.html"), width = 12, background = "light-blue"),
+  ),
+  fluidRow(
+    box(dataTableOutput("dataTable"), width = 6, height = 4, title = "Explore the DataSet"),
+    box(dataTableOutput("dataSummary"), width = 4,height = 4, title = "Summary")
+  ),
+  fluidRow(
+    infoBoxOutput("femaleCount",width = 3),
+    infoBoxOutput("maleCount",width = 3),
+    infoBoxOutput("smokerCount",width = 3),
+    infoBoxOutput("nonSmokerCount",width = 3)
   )
 )
 dataSetTab <- tabItem(
   tabName = "dataset",
   fluidRow(
-    box(dataTableOutput("dataTable"), width = 12, title = "The DataSet")
+    box(dataTableOutput("dataTable1"), width = 8, title = "The DataSet")
   ),
   fluidRow(
-    box(dataTableOutput("dataSummary"), width = 6, title = "Summary"),
-    box(tableOutput("sexCount"), width = 3, title = "Gender Summary"),
-    box(tableOutput("smokerCount"), width = 3, title = "Smoker Summary")
+    box(dataTableOutput("dataSummary1"), width = 6, title = "Summary"),
+    box(tableOutput("sexCount1"), width = 3, title = "Gender Summary"),
+    box(tableOutput("smokerCount1"), width = 3, title = "Smoker Summary")
   )
 )
 
@@ -59,6 +69,9 @@ chartTab <- tabItem(
     box(sliderInput("age", "Age:", min = min(csvData$age), max =  max(csvData$age),value = 18,),
         plotOutput("ageSmoker")
     )
+  ),
+  fluidRow(
+    box( infoBoxOutput("chargeDiff") )
   )
 )
 
