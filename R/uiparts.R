@@ -2,14 +2,9 @@
 introMenu <- menuItem(
   "Introduction",
   tabName = "dashboard",
-  icon = icon("info"),
-  selected = T
-)
-dataSetmenu <- menuItem(
-  "Data Summary",
-  tabName = "dataset",
   icon = icon("table")
 )
+
 correlationmenu <- menuItem(
   "Correlation",
   tabName = "correlation",
@@ -28,25 +23,26 @@ introTab <- tabItem(
     box(includeHTML("www/include.html"), width = 12, background = "light-blue"),
   ),
   fluidRow(
-    box(dataTableOutput("dataTable"), width = 6, height = 4, title = "Explore the DataSet"),
-    box(dataTableOutput("dataSummary"), width = 4,height = 4, title = "Summary")
-  ),
-  fluidRow(
-    infoBoxOutput("femaleCount",width = 3),
-    infoBoxOutput("maleCount",width = 3),
-    infoBoxOutput("smokerCount",width = 3),
-    infoBoxOutput("nonSmokerCount",width = 3)
-  )
-)
-dataSetTab <- tabItem(
-  tabName = "dataset",
-  fluidRow(
-    box(dataTableOutput("dataTable1"), width = 8, title = "The DataSet")
-  ),
-  fluidRow(
-    box(dataTableOutput("dataSummary1"), width = 6, title = "Summary"),
-    box(tableOutput("sexCount1"), width = 3, title = "Gender Summary"),
-    box(tableOutput("smokerCount1"), width = 3, title = "Smoker Summary")
+    tabBox(
+      title = "",height = 400,
+      tabPanel("DataSet", dataTableOutput("dataTable")) ,
+      tabPanel("Data Summary",dataTableOutput("dataSummary") )
+      
+    ),
+    fluidRow(
+      column(width = 6,
+          infoBoxOutput("femaleCount"),
+          infoBoxOutput("maleCount"),
+      ),
+      column(width = 6,
+             infoBoxOutput("smokerCount"),
+             infoBoxOutput("nonSmokerCount",width = 4)
+      ),
+      column(width = 6,
+        includeHTML("www/brief.html"),
+        actionButton("Corrleation","Go to Corrleation",icon =  icon("project-diagram"))
+      )
+    ),
   )
 )
 

@@ -1,4 +1,13 @@
 server <- function(input, output, session) {
+  observeEvent(session, {
+    updateTabItems(session, "tabs", selected = "dashboard")
+  })
+  
+  # add and remove tabs
+  observeEvent(input$Corrleation, {
+    updateTabItems(session, "tabs", selected = "correlation")
+  })
+  
   output$corrCharges <-
     renderTable(
       sort(round(corrData[1:6, "charges"], digits = 2), decreasing = T),
@@ -20,7 +29,9 @@ server <- function(input, output, session) {
         lengthMenu = c(4, 5)
       )
     )
-  output$dataSummary <-
+#  updateTabItems(session,selected = "correlation")
+
+    output$dataSummary <-
     renderDataTable(summary(csvData[, c(1, 3, 7)])[c(1, 3, 4, 6),],
                     options = list(
                       info = F,
@@ -31,25 +42,25 @@ server <- function(input, output, session) {
   output$femaleCount <- renderInfoBox(
     infoBox(
       "#Female", sexCount[1,2] , icon = icon("female"),
-      color = "aqua", fill = TRUE
+      color = "aqua", fill = TRUE,width = 3
     )
   ) 
   output$maleCount <- renderInfoBox(
     infoBox(
       "#Male", sexCount[2,2] , icon = icon("male"),
-      color = "orange", fill = TRUE
+      color = "orange", fill = TRUE,width = 3
     )
   ) 
   output$smokerCount <- renderInfoBox(
     infoBox(
       "#Smoker", smokerCount[2,2] , icon = icon("smoking"),
-      color = "teal", fill = TRUE,subtitle = "das"
+      color = "teal", fill = TRUE,width = 3
     )
   ) 
   output$nonSmokerCount <- renderInfoBox(
     infoBox(
       "#non-smoker", smokerCount[1,2] , icon = icon("smoking-ban"),
-      color = "maroon", fill = TRUE
+      color = "maroon", fill = TRUE,width = 3
     )
   ) 
   output$sexCount <-

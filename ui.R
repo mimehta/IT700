@@ -1,8 +1,8 @@
 
 header <- dashboardHeader(title = "Medical charges", disable = F)
 
-sidebar <- dashboardSidebar(sidebarMenu(introMenu, dataSetmenu, correlationmenu, chartMenu))
+sidebar <- dashboardSidebar(sidebarMenu(id = "tabs",introMenu, correlationmenu, chartMenu))
 
-body <- dashboardBody(tabItems(introTab, dataSetTab, corrTab, chartTab))
+body <- dashboardBody(tabItems(introTab, corrTab, chartTab ) )
 
 ui <- dashboardPage(header, sidebar, body , title = "Main Page")
