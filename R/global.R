@@ -26,3 +26,12 @@ nonsmokerMean <- format(round(mean(nonsmokerData$charges),2), nsmall = 2)
 sexsmokerData <- csvData[,c("sex", "smoker", "charges")]
 
 agesmokerData <- csvData[,c("age", "smoker", "charges")]
+levels(csvData$sex) <- c("0","1","M","F")
+csvData$sex[csvData$sex == 1] <- "M"
+csvData$sex[csvData$sex == 0] <- "F"
+levels(csvData$sex) <- c("M","F")
+
+levels(csvData$smoker) <- c("0","1","Y","N")
+csvData$smoker[csvData$smoker == 1] <- "Y"
+csvData$smoker[csvData$smoker == 0] <- "N"
+levels(csvData$smoker) <- c("N","Y")

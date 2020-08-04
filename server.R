@@ -7,7 +7,10 @@ server <- function(input, output, session) {
   observeEvent(input$Corrleation, {
     updateTabItems(session, "tabs", selected = "correlation")
   })
-  
+  # add and remove tabs
+  observeEvent(input$Charts, {
+    updateTabItems(session, "tabs", selected = "charts")
+  })
   output$corrCharges <-
     renderTable(
       sort(round(corrData[1:6, "charges"], digits = 2), decreasing = T),
@@ -16,7 +19,27 @@ server <- function(input, output, session) {
       bordered = T
     )
   output$corrPlot <-
-    renderPlot(corrplot(corrData, method = "square", diag = F))
+    renderPlot(corrplot(corrData, method = "square", diag = F, tl.col = "black"))
+  
+  output$smokercorr <- renderValueBox(
+    valueBox(
+      paste0(round(corrData["smoker", "charges"]*100, digits = 0),"%"), "Smoker", 
+      color = "maroon", width = 2,icon = icon("smoking"),
+    )
+  ) 
+  output$agecorr <- renderValueBox(
+    valueBox(
+      paste0(round(corrData["age", "charges"]*100, digits = 0),"%"), "Age", 
+      color = "teal", width = 2,icon = icon("birthday-cake"),
+    )
+  ) 
+  output$bmiCorr <- renderValueBox(
+    valueBox(
+      paste0(round(corrData["bmi", "charges"]*100, digits = 0),"%"), "BMI", 
+      color = "orange", width = 2,icon = icon("heartbeat"),
+    )
+  ) 
+  
   output$dataTable <-
     renderDataTable(
       csvData[, 1:7],
@@ -29,16 +52,15 @@ server <- function(input, output, session) {
         lengthMenu = c(4, 5)
       )
     )
-#  updateTabItems(session,selected = "correlation")
 
-    output$dataSummary <-
-    renderDataTable(summary(csvData[, c(1, 3, 7)])[c(1, 3, 4, 6),],
-                    options = list(
-                      info = F,
-                      paging = F,
-                      searching = F,
-                      lengthMenu = F
-                    ))
+    output$dataSummary <- renderDataTable(
+      summary(csvData[, c(1, 3, 7)])[c(1, 3, 4, 6),],
+      options = list(
+        info = F,
+        paging = F,
+        searching = F,
+        lengthMenu = F
+      ))
   output$femaleCount <- renderInfoBox(
     infoBox(
       "#Female", sexCount[1,2] , icon = icon("female"),
