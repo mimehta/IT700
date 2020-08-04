@@ -47,11 +47,30 @@ smokerData <- csvData %>% filter(smoker == 1)
 nonsmokerData <- csvData %>% filter(smoker == 0)
 mean(smokerData$charges)
 mean(nonsmokerData$charges)
+genderCol <- c("aqua","orange")
+smokCol <- c("teal","maroon")
+
+
+hist(csvData$charges[csvData$smoker==1], freq = FALSE, col = smokCol[1+1])
+lines(density(csvData$charges[csvData$smoker==1]),col = smokCol[1+1] )
+
+hist(csvData$charges[csvData$smoker==0], freq = FALSE,col = smokCol[0+1])
+lines(density(csvData$charges[csvData$smoker==0]),col = smokCol[0+1] )
+
+curve(dnorm(x,mean = mean(csvData$charges[csvData$smoker==0]), sd = sd(csvData$charges[csvData$smoker==0])), add=TRUE,col="red")
+
+mean(csvData$charges[csvData$smoker==1])
+sd(csvData$charges[csvData$smoker==1])
+
+
+lines(csvData$charges[csvData$smoker==1])
 
 hist(smokerData$charges, col = "orange", main="charges for smoker", xlab="Charges in $", ylab="# of cases")
 hist(nonsmokerData$charges, col = "orange", main="charges for nonsmoker", xlab="Charges in $", ylab="# of cases")
 abline(csvData$smoker, csvData$charges)
 library("GGally")
+
+
 
 
 barplot(table(csvData$sex, csvData$age), beside = T)

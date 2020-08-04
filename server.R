@@ -11,13 +11,29 @@ server <- function(input, output, session) {
   observeEvent(input$Charts, {
     updateTabItems(session, "tabs", selected = "charts")
   })
-  output$corrCharges <-
-    renderTable(
-      sort(round(corrData[1:6, "charges"], digits = 2), decreasing = T),
-      rownames = T,
-      colnames = F,
-      bordered = T
+
+  output$dataTable <-
+    renderDataTable(
+      csvData[, 1:7],
+      searchDelay = 1000,
+      options = list(
+        pageLength = 5,
+        lengthChange = F,
+        info = FALSE,
+        searching = FALSE,
+        lengthMenu = c(4, 5)
+      )
     )
+  
+  output$dataSummary <- renderDataTable(
+    summary(csvData[, c(1, 3, 7)])[c(1, 3, 4, 6),],
+    options = list(
+      info = F,
+      paging = F,
+      searching = F,
+      lengthMenu = F
+    ))
+  
   output$corrPlot <-
     renderPlot(corrplot(corrData, method = "square", diag = F, tl.col = "black"))
   
@@ -40,27 +56,7 @@ server <- function(input, output, session) {
     )
   ) 
   
-  output$dataTable <-
-    renderDataTable(
-      csvData[, 1:7],
-      searchDelay = 1000,
-      options = list(
-        pageLength = 5,
-        lengthChange = F,
-        info = FALSE,
-        searching = FALSE,
-        lengthMenu = c(4, 5)
-      )
-    )
 
-    output$dataSummary <- renderDataTable(
-      summary(csvData[, c(1, 3, 7)])[c(1, 3, 4, 6),],
-      options = list(
-        info = F,
-        paging = F,
-        searching = F,
-        lengthMenu = F
-      ))
   output$femaleCount <- renderInfoBox(
     infoBox(
       "#Female", sexCount[1,2] , icon = icon("female"),

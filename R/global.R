@@ -6,6 +6,9 @@ library(xtable)
 library(shinydashboard)
 library(beanplot)
 
+genderCol <- c("aqua","orange")
+smokCol <- c("teal","maroon")
+
 csvData <- read_csv("data/datasets_insurance.csv")
 corrData <- cor(csvData)
 sexCount <- table(csvData$sex)
