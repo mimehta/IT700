@@ -48,14 +48,27 @@ nonsmokerData <- csvData %>% filter(smoker == 0)
 mean(smokerData$charges)
 mean(nonsmokerData$charges)
 genderCol <- c("aqua","orange")
-smokCol <- c("teal","maroon")
+smokCol <- c("#008080","maroon")
+smokText <- c("non-smoker","smoker")
+
+ggplot(csvData,aes(group=smoker,color=smoker, x=charges )) +
+  geom_density( ) 
+
+hist(csvData$charges[csvData$smoker==1], freq = FALSE, col = smokCol[1+1],density = 7,
+     main = paste0("Distribution of charges for ",smokText[1+1]),xlab = "Charges", ylim = c(0,0.00009)  )
+lines(density(csvData$charges[csvData$smoker==1]),col = smokCol[1+1], lwd=3 )
+lines(density(csvData$charges[csvData$smoker==0]),col = smokCol[0+1], lwd=3 )
+legend(30000, 0.00005, smokText,  fill=smokCol)
+legend(17000, 0.00005, "Charges", col = "black",density = 15)
+
+hist(csvData$charges, freq = FALSE,col = "black",density = 12, 
+     main = paste0("Distribution of charges"),xlab = "Charges", ylim = c(0,0.00009))
+lines(density(csvData$charges[csvData$smoker==0]),col = smokCol[0+1], lwd=3 )
+lines(density(csvData$charges[csvData$smoker==1]),col = smokCol[1+1], lwd=3 )
+legend(30000, 0.00005, smokText, fill=smokCol)
+legend(17000, 0.00005, "Charges", col = "black",density = 15)
 
 
-hist(csvData$charges[csvData$smoker==1], freq = FALSE, col = smokCol[1+1])
-lines(density(csvData$charges[csvData$smoker==1]),col = smokCol[1+1] )
-
-hist(csvData$charges[csvData$smoker==0], freq = FALSE,col = smokCol[0+1])
-lines(density(csvData$charges[csvData$smoker==0]),col = smokCol[0+1] )
 
 curve(dnorm(x,mean = mean(csvData$charges[csvData$smoker==0]), sd = sd(csvData$charges[csvData$smoker==0])), add=TRUE,col="red")
 

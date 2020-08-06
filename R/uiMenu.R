@@ -11,7 +11,7 @@ correlationmenu <- menuItem(
   icon = icon("project-diagram")
 )
 chartMenu <- menuItem(
-  "charts",
+  "Charts",
   tabName = "charts",
   icon = icon("chart-bar")
 )

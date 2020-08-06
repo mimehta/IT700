@@ -185,4 +185,27 @@ server <- function(input, output, session) {
         icon = icon("arrow-alt-circle-up")
     )
   )
+  smoSel <-
+    reactive(paste0("",input$smoBox))
+  
+  output$smoDistText <- renderText(smoSel())
+  
+  output$smoDistPlot <- renderPlot(
+    {
+      hist(csvData$charges, freq = FALSE,col = "black",density = 12, 
+          main="", xlab = "Charges", ylim = c(0,0.00009))
+      if( !is.null(input$smoBox)) {
+        if( 1 %in% input$smoBox) {
+          lines(density(csvData$charges[csvData$smoker=='N']),col = smokCol[1], lwd=3 )
+          legend(30000, 0.000065, smokText[1], fill=smokCol[1],bty = "n")
+        } 
+        if( 2 %in% input$smoBox ) {
+          lines(density(csvData$charges[csvData$smoker=='Y']),col = smokCol[2], lwd=3 )
+          legend(30000, 0.000055, smokText[2], fill=smokCol[2],bty = "n")
+        }
+      }
+      legend(30000, 0.00006, "charges", col = "black",density = 15,bty = "n")
+    }
+  )
+  
 }

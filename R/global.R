@@ -7,7 +7,7 @@ library(shinydashboard)
 library(beanplot)
 
 genderCol <- c("aqua","orange")
-smokCol <- c("teal","maroon")
+smokCol <- c("#008080","maroon")
 
 csvData <- read_csv("data/datasets_insurance.csv")
 corrData <- cor(csvData)
