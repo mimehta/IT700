@@ -65,6 +65,8 @@ hist(csvData$charges, freq = FALSE,col = "black",density = 12,
      main = paste0("Distribution of charges"),xlab = "Charges", ylim = c(0,0.00009))
 lines(density(csvData$charges[csvData$smoker==0]),col = smokCol[0+1], lwd=3 )
 lines(density(csvData$charges[csvData$smoker==1]),col = smokCol[1+1], lwd=3 )
+abline(v=mean(csvData$charges), lwd=3, lty=2)
+legend(11000, 0.00007, "Average",bty = "n")
 legend(30000, 0.00005, smokText, fill=smokCol)
 legend(17000, 0.00005, "Charges", col = "black",density = 15)
 

@@ -194,6 +194,7 @@ server <- function(input, output, session) {
     {
       hist(csvData$charges, freq = FALSE,col = "black",density = 12, 
           main="", xlab = "Charges", ylim = c(0,0.00009))
+      abline(v=mean(csvData$charges), lwd=3, lty=3)
       if( !is.null(input$smoBox)) {
         if( 1 %in% input$smoBox) {
           lines(density(csvData$charges[csvData$smoker=='N']),col = smokCol[1], lwd=3 )
@@ -205,6 +206,7 @@ server <- function(input, output, session) {
         }
       }
       legend(30000, 0.00006, "charges", col = "black",density = 15,bty = "n")
+      legend(11000, 0.00007, "Average",bty = "n")
     }
   )
   
