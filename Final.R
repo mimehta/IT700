@@ -63,9 +63,10 @@ legend(17000, 0.00005, "Charges", col = "black",density = 15)
 
 hist(csvData$charges, freq = FALSE,col = "black",density = 12, 
      main = paste0("Distribution of charges"),xlab = "Charges", ylim = c(0,0.00009))
+lines(density(csvData$charges),col = "black", lwd=3 )
 lines(density(csvData$charges[csvData$smoker==0]),col = smokCol[0+1], lwd=3 )
 lines(density(csvData$charges[csvData$smoker==1]),col = smokCol[1+1], lwd=3 )
-abline(v=mean(csvData$charges), lwd=3, lty=2)
+abline(v=mean(csvData$charges), lwd=3, lty=3)
 legend(11000, 0.00007, "Average",bty = "n")
 legend(30000, 0.00005, smokText, fill=smokCol)
 legend(17000, 0.00005, "Charges", col = "black",density = 15)
@@ -97,6 +98,9 @@ boxplot(nonsmokerData$charges,smokerData$charges,
         names  = c("nonsmoker", "smoker"), 
         xlab="charges")
 legend(1, 30000, c(   paste0("Mean:",mean(smokerData$charges)  ) ) , bg = "lightblue"  )
+rect(0, 0, 1.45, 60000, lwd = 5, border = smokCol[1])
+rect(1.55, 0, 2.5, 60000, lwd = 5, col = adjustcolor( smokCol[2],alpha = 0.5))
+
 
 plot(csvData[csvData$charges < 17000,c("age", "charges")], col = "blue4", main="relation of age and charge")
 sexsmokerData <- csvData[,c("sex", "smoker", "charges")]
@@ -106,10 +110,13 @@ sexsmokerData <- csvData[,c("sex", "smoker", "charges")]
 #### Not Used #####
 boxplot(charges ~ sex + smoker, sexsmokerData, horizontal = F, notch = T, 
                main="charges comparision for smoker- gender wise", at = c(1,2,3,4), 
-        col = c("#226699","#FF5511"),outline=FALSE,names=c("","","","") )
-legend(1, 55000, c("female", "male"),  fill=c("#226699","#FF5511"))
-legend(1, 30000, c("non-smoker"),bg = "lightblue"  )
-legend(3.5, 5000, c("smoker"), bg = "#FFBB77")
+        col = genderCol,outline=FALSE,names=c("","","","") )
+rect(0, 0, 2.5, 70000, col = adjustcolor(smokCol[1],alpha = 0.1)  )
+rect(2.5, 0, 4.5, 70000,  col = adjustcolor( smokCol[2],alpha = 0.1))
+
+legend(1, 45000, c("female", "male"),  fill=genderCol,bty = "n")
+legend(1, 60000, c("non-smoker"),bty = "n" )
+legend(3, 60000, c("smoker"), bty = "n")
 
 agesmokerData <- csvData[,c("age", "smoker", "charges")]
 

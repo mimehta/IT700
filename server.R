@@ -102,15 +102,13 @@ server <- function(input, output, session) {
       nonsmokerData$charges,
       smokerData$charges,
       at = c(1, 2),
-      col = c("#226699", "#FF5511"),
+      col = smokCol,
       horizontal = F,
       notch = T,
       outline = FALSE,
       names  = c("nonsmoker", "smoker"),
-      xlab = "charges"
+      ylab = "charges"
     )
-    legend(0.5, 30000, c(paste0("Mean:", smokerMean)) , bg = "lightblue")
-    legend(1.5, 50000, c(paste0("Mean:", nonsmokerMean)) , bg = "lightblue")
   })
   output$smokercharts <- renderPlot(expr = {
     boxplot(
@@ -118,15 +116,16 @@ server <- function(input, output, session) {
       sexsmokerData,
       horizontal = F,
       notch = T,
-      main = "charges comparision for smoker- gender wise",
       at = c(1, 2, 3, 4),
-      col = c("#226699", "#FF5511"),
-      outline = FALSE,
+      col = genderCol,
+      outline = FALSE,xlab = "",
       names = c("", "", "", "")
     )
-    legend(1, 55000, c("female", "male"),  fill = c("#226699", "#FF5511"))
-    legend(1, 30000, c("non-smoker"), bg = "lightblue")
-    legend(3.5, 5000, c("smoker"), bg = "lightblue")
+    rect(0, 0, 2.5, 70000, col = adjustcolor(smokCol[1],alpha = 0.1)  )
+    rect(2.5, 0, 4.5, 70000,  col = adjustcolor( smokCol[2],alpha = 0.1))
+    legend(1, 55000, c("female", "male"), bty = "n", fill = genderCol)
+    legend(1, 30000, c("non-smoker"), bty = "n")
+    legend(3, 10000, c("smoker"), bty = "n")
   })
   output$scatter <- renderPlot({
     plot(
@@ -190,7 +189,7 @@ server <- function(input, output, session) {
   
   output$smoDistText <- renderText(smoSel())
   
-  output$smoDistPlot <- renderPlot(
+  output$smoDistPlot <- renderPlot(width = 370, height = 370,
     {
       hist(csvData$charges, freq = FALSE,col = "black",density = 12, 
           main="", xlab = "Charges", ylim = c(0,0.00009))

@@ -6,7 +6,7 @@ library(xtable)
 library(shinydashboard)
 library(beanplot)
 
-genderCol <- c("aqua","orange")
+genderCol <- c("#00FFFF","orange")
 smokCol <- c("#008080","maroon")
 
 csvData <- read_csv("data/datasets_insurance.csv")
@@ -23,10 +23,13 @@ colnames(smokerCount) <- c("Type","Count")
 
 smokerData <- csvData %>% filter(smoker == 1)
 nonsmokerData <- csvData %>% filter(smoker == 0)
-smokerMean <- format(round(mean(smokerData$charges),2), nsmall = 2)
-nonsmokerMean <- format(round(mean(nonsmokerData$charges),2), nsmall = 2) 
+smokerMean <- format(round(mean(smokerData$charges),0), nsmall = 0)
+nonsmokerMean <- format(round(mean(nonsmokerData$charges),0), nsmalla = 0) 
 
 sexsmokerData <- csvData[,c("sex", "smoker", "charges")]
+aggMean <- aggregate(charges ~ sex+smoker,sexsmokerData, mean )
+diffMale <- round(diff(aggMean$charges[aggMean$sex ==1] ),0)
+diffFemale <- round(diff(aggMean$charges[aggMean$sex ==0] ),0)
 
 agesmokerData <- csvData[,c("age", "smoker", "charges")]
 levels(csvData$sex) <- c("0","1","M","F")
