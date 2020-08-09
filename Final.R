@@ -206,9 +206,9 @@ abline(lm(charges ~ age, data = filter(agesmokerData, smoker == 1)) ,lwd = 2, co
 
 
 beanplot(
-  agesmokerData[agesmokerData$age == 18 &
+  agesmokerData[round(agesmokerData$bmi,digits = 0) == 18 &
                   agesmokerData$smoker == 0,]$charges,
-  agesmokerData[agesmokerData$age == 18 &
+  agesmokerData[round(agesmokerData$bmi,digits = 0) == 18 &
                   agesmokerData$smoker == 1,]$charges,
   at = c(1, 2),
   col = list("#52796f","maroon"),

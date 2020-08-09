@@ -13,5 +13,8 @@ correlationmenu <- menuItem(
 chartMenu <- menuItem(
   "Charts",
   tabName = "charts",
-  icon = icon("chart-bar")
+  icon = icon("chart-bar"),startExpanded = TRUE,
+  menuSubItem("smokerchart",tabName = "smokerChart"),
+  menuSubItem("agechart",tabName = "ageChart"),
+  menuSubItem("bmichart",tabName = "bmiChart")
 )

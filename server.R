@@ -8,8 +8,8 @@ server <- function(input, output, session) {
     updateTabItems(session, "tabs", selected = "correlation")
   })
   # add and remove tabs
-  observeEvent(input$Charts, {
-    updateTabItems(session, "tabs", selected = "charts")
+  observeEvent(input$smokerchart, {
+    updateTabItems(session, "tabs", selected = "smokerChart")
   })
 
   output$dataTable <-
@@ -78,7 +78,7 @@ server <- function(input, output, session) {
   output$nonSmokerCount <- renderInfoBox(
     infoBox(
       "#non-smoker", smokerCount[1,2] , icon = icon("smoking-ban"),
-      color = "maroon", fill = TRUE,width = 3
+      color = 'maroon', fill = TRUE,width = 3
     )
   ) 
   output$sexCount <-
@@ -110,6 +110,7 @@ server <- function(input, output, session) {
       ylab = "charges"
     )
   })
+  
   output$smokercharts <- renderPlot(expr = {
     boxplot(
       charges ~ sex + smoker,
@@ -218,7 +219,7 @@ server <- function(input, output, session) {
         agesmokerData$age,
         agesmokerData$charges,
         pch = 16,xlab = "Age", ylab = "Charges",
-        col = smokCol[agesmokerData$sex + 1]
+        col = smokCol[agesmokerData$smoker + 1]
       )
       legend(17, 60000, c("non-smoker", "smoker"),bty = "n", fill = smokCol)
       
@@ -228,6 +229,80 @@ server <- function(input, output, session) {
     }
   )
   
+  output$agescatter <- renderPlot(
+    {
+      plot(
+        agesmokerData$age,
+        agesmokerData$charges,
+        pch = 16,xlab = "BMI", ylab = "Charges",
+        col = genderCol[agesmokerData$sex + 1]
+      )
+      legend(17, 60000, c("female", "male"),bty = "n", fill = genderCol)
+      
+      abline(lm(charges ~ age, data = agesmokerData), lwd = 2, col = "black" )
+      abline(lm(charges ~ age, data = filter(agesmokerData, sex == 0)), lwd = 2,col = genderCol[1])
+      abline(lm(charges ~ age, data = filter(agesmokerData, sex == 1)) ,lwd = 2, col = genderCol[2])
+    }
+  )
+  output$bmiscatter <- renderPlot(
+    {
+      plot(
+        agesmokerData$bmi,
+        agesmokerData$charges,
+        pch = 16,xlab = "BMI", ylab = "Charges",
+        col = genderCol[agesmokerData$sex + 1]
+      )
+      legend(17, 60000, c("female", "male"),bty = "n", fill = genderCol)
+      
+      abline(lm(charges ~ bmi, data = agesmokerData), lwd = 2, col = "black" )
+      abline(lm(charges ~ bmi, data = filter(agesmokerData, sex == 0)), lwd = 2,col = genderCol[1])
+      abline(lm(charges ~ bmi, data = filter(agesmokerData, sex == 1)) ,lwd = 2, col = genderCol[2])
+    }
+  )
   
+  output$bmismoscatter <- renderPlot(
+    {
+      plot(
+        agesmokerData$bmi,
+        agesmokerData$charges,
+        pch = 16,xlab = "BMI", ylab = "Charges",
+        col = smokCol[agesmokerData$smoker + 1]
+      )
+      legend(17, 60000, c("non-smoker", "smoker"),bty = "n", fill = smokCol)
+      
+      abline(lm(charges ~ bmi, data = agesmokerData), lwd = 2, col = "black" )
+      abline(lm(charges ~ bmi, data = filter(agesmokerData, smoker == 0)), lwd = 2,col = smokCol[1])
+      abline(lm(charges ~ bmi, data = filter(agesmokerData, smoker == 1)) ,lwd = 2, col = smokCol[2])
+    }
+  )
+  
+  bmismok <-
+    reactive(agesmokerData[round(agesmokerData$bmi,digits = 0) == input$bmi &
+                             agesmokerData$smoker == 1,]$charges)
+  bminonsmok <-
+    reactive(agesmokerData[round(agesmokerData$bmi,digits = 0) == input$bmi &
+                             agesmokerData$smoker == 0,]$charges)
+  
+  output$bmiSmoker <- renderPlot({
+    beanplot(
+      bminonsmok(),
+      bmismok(),
+      at = c(1, 2),
+      col = list("#52796f","maroon"),
+      what = c(1, 1, 1, 0),
+      side = "both",
+      horizontal = F,
+      notch = F, 
+      outline = F,
+      axes = T,
+      names  = c("", ""),
+      ylab = "charges",
+      xlab = "nonsmoker:smoker"
+    )
+    legend(0.5,
+           50000,
+           c("non-smoker", "smoker"),
+           fill = smokCol)
+  })
   
 }

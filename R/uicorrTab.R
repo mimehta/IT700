@@ -15,9 +15,9 @@ corrTab <- tabItem(
              valueBoxOutput("agecorr",width = 3),
              valueBoxOutput("bmiCorr",width = 3)
       ),
-      column(width = 6,
-             actionButton("Charts","Go to Charts",icon =  icon("chart-area"))
-      )
+#      column(width = 6,
+#             actionButton("smoker-chart","Go to Charts",icon =  icon("chart-area"))
+#      )
     ),
   )
 ) 
