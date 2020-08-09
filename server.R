@@ -132,16 +132,13 @@ server <- function(input, output, session) {
       agesmokerData$age,
       agesmokerData$charges,
       pch = 16,
-      col = c("#226699", "#FF5511")[agesmokerData$smoker + 1]
+      col = smokCol[agesmokerData$smoker + 1]
     )
-    legend(17,
-           60000,
-           c("non-smoker", "smoker"),
-           fill = c("#226699", "#FF5511"))
-    
-    abline(lm(charges ~ age, data = filter(agesmokerData, smoker == 0)), col =
-             "#226699")
-    abline(lm(charges ~ age, data = filter(agesmokerData, smoker == 1)) , col = "#FF5511")
+    legend(17, 60000, smokText,bty = "n", fill = smokCol)
+
+    abline(lm(charges ~ age, data = agesmokerData), lwd =3, col = "black" )
+    abline(lm(charges ~ age, data = filter(agesmokerData, smoker == 0)), lwd =3,col = smokCol[1])
+    abline(lm(charges ~ age, data = filter(agesmokerData, smoker == 1)) ,lwd =3, col = smokCol[2])
   })
   agesmok <-
     reactive(agesmokerData[agesmokerData$age == input$age &
@@ -149,19 +146,19 @@ server <- function(input, output, session) {
   agenonsmok <-
     reactive(agesmokerData[agesmokerData$age == input$age &
                              agesmokerData$smoker == 0,]$charges)
+  output$selectedAge <- renderText(input$age)
   output$ageSmoker <- renderPlot({
     beanplot(
       agenonsmok(),
       agesmok(),
       at = c(1, 2),
-      col = list("#226699", "#FF5511"),
+      col = list("#52796f","maroon"),
       what = c(1, 1, 1, 0),
       side = "both",
       horizontal = F,
       notch = F, 
       outline = F,
       axes = T,
-      main = "charges comparision",
       names  = c("", ""),
       ylab = "charges",
       xlab = "nonsmoker:smoker"
@@ -169,20 +166,11 @@ server <- function(input, output, session) {
     legend(0.5,
            50000,
            c("non-smoker", "smoker"),
-           fill = c("#226699", "#FF5511"))
-    
-    #      legend(1, 30000, paste0("Diff:",round(mean(agesmok()) - mean(agenonsmok()) , digits = 2)),bg = "#FF5511"  )
-    #      legend(0.8, 20000, paste0("mean:",round(mean(agenonsmok()) , digits = 2)),bg = "lightblue"  )
-    #      legend(1.6, 10000, paste0("mean:",round(mean(agesmok()) , digits = 2)),bg = "lightblue"  )
-    
+           fill = smokCol)
   })
   
-  output$chargeDiff <- renderInfoBox(
-    infoBox(
-      title = paste0("age#", input$age) , 
-      value = round(mean(agesmok()) - mean(agenonsmok()),digits=2),color = "red",
-        icon = icon("arrow-alt-circle-up")
-    )
+  output$chargeDiff <- renderText(
+      round(mean(agesmok()) - mean(agenonsmok()),digits=0)
   )
   smoSel <-
     reactive(paste0("",input$smoBox))
@@ -208,5 +196,38 @@ server <- function(input, output, session) {
       legend(11000, 0.00007, "Average",bty = "n")
     }
   )
+  
+  output$genscatter <- renderPlot(
+    {
+      plot(
+        agesmokerData$age,
+        agesmokerData$charges,
+        pch = 16,xlab = "Age", ylab = "Charges",
+        col = genderCol[agesmokerData$sex + 1]
+      )
+      legend(17, 60000, c("female", "male"),bty = "n", fill = genderCol)
+      
+      abline(lm(charges ~ age, data = agesmokerData), lwd = 2, col = "black" )
+      abline(lm(charges ~ age, data = filter(agesmokerData, sex == 0)), lwd = 2,col = genderCol[1])
+      abline(lm(charges ~ age, data = filter(agesmokerData, sex == 1)) ,lwd = 2, col = genderCol[2])
+    }
+  )
+  output$smoscatter <- renderPlot(
+    {
+      plot(
+        agesmokerData$age,
+        agesmokerData$charges,
+        pch = 16,xlab = "Age", ylab = "Charges",
+        col = smokCol[agesmokerData$sex + 1]
+      )
+      legend(17, 60000, c("non-smoker", "smoker"),bty = "n", fill = smokCol)
+      
+      abline(lm(charges ~ age, data = agesmokerData), lwd = 2, col = "black" )
+      abline(lm(charges ~ age, data = filter(agesmokerData, smoker == 0)), lwd = 2,col = smokCol[1])
+      abline(lm(charges ~ age, data = filter(agesmokerData, smoker == 1)) ,lwd = 2, col = smokCol[2])
+    }
+  )
+  
+  
   
 }

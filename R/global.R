@@ -6,8 +6,8 @@ library(xtable)
 library(shinydashboard)
 library(beanplot)
 
-genderCol <- c("#00FFFF","orange")
-smokCol <- c("#008080","maroon")
+genderCol <- c("#007ea7","#f27059")
+smokCol <- c("#52796f","maroon")
 
 csvData <- read_csv("data/datasets_insurance.csv")
 corrData <- cor(csvData)
@@ -31,7 +31,7 @@ aggMean <- aggregate(charges ~ sex+smoker,sexsmokerData, mean )
 diffMale <- round(diff(aggMean$charges[aggMean$sex ==1] ),0)
 diffFemale <- round(diff(aggMean$charges[aggMean$sex ==0] ),0)
 
-agesmokerData <- csvData[,c("age", "smoker", "charges")]
+agesmokerData <- csvData[,c("sex","age", "smoker", "charges")]
 levels(csvData$sex) <- c("0","1","M","F")
 csvData$sex[csvData$sex == 1] <- "M"
 csvData$sex[csvData$sex == 0] <- "F"

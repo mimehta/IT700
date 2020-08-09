@@ -118,7 +118,7 @@ legend(1, 45000, c("female", "male"),  fill=genderCol,bty = "n")
 legend(1, 60000, c("non-smoker"),bty = "n" )
 legend(3, 60000, c("smoker"), bty = "n")
 
-agesmokerData <- csvData[,c("age", "smoker", "charges")]
+agesmokerData <- csvData[,c("bmi","sex","age", "smoker", "charges")]
 
 ##  to be continue
 ageChargeVect2 <- unlist(lapply(seq(min(agesmokerData$age), max(agesmokerData$age) ) , function(n) c(mean(agesmokerData[agesmokerData$age == n & agesmokerData$smoker ==0,]$charges)) ) )
@@ -163,3 +163,68 @@ boxplot(charges ~ age + smoker, agesmokerData, horizontal = F, notch = F,
         main="charges comparision for smoker- gender wise", at = 1:94, 
         col = c("#226699","#FF5511"),outline=FALSE )
  
+
+
+plot(
+  agesmokerData$age,
+  agesmokerData$charges,
+  pch = 16,xlab = "Age", ylab = "Charges",
+  col = genderCol[agesmokerData$sex + 1]
+)
+legend(17, 60000, c("female", "male"),bty = "n", fill = genderCol)
+
+abline(lm(charges ~ age, data = agesmokerData), lwd = 2, col = "black" )
+abline(lm(charges ~ age, data = filter(agesmokerData, sex == 0)), lwd = 2,col = genderCol[1])
+abline(lm(charges ~ age, data = filter(agesmokerData, sex == 1)) ,lwd = 2, col = genderCol[2])
+
+
+plot(
+  agesmokerData$bmi,
+  agesmokerData$charges,
+  pch = 16,
+  col = smokCol[agesmokerData$smoker + 1]
+)
+legend(17, 60000, smokText,bty = "n", fill = smokCol)
+
+abline(lm(charges ~ bmi, data = agesmokerData), lwd =3, col = "black" )
+abline(lm(charges ~ bmi, data = filter(agesmokerData, smoker == 0)), lwd =3,col = smokCol[1])
+abline(lm(charges ~ bmi, data = filter(agesmokerData, smoker == 1)) ,lwd =3, col = smokCol[2])
+
+
+plot(
+  agesmokerData$age,
+  agesmokerData$charges,
+  pch = 16,xlab = "Age", ylab = "Charges",
+  col = smokCol[agesmokerData$sex + 1]
+)
+legend(17, 60000, c("non-smoker", "smoker"),bty = "n", fill = smokCol)
+
+abline(lm(charges ~ age, data = agesmokerData), lwd = 2, col = "black" )
+abline(lm(charges ~ age, data = filter(agesmokerData, smoker == 0)), lwd = 2,col = smokCol[1])
+abline(lm(charges ~ age, data = filter(agesmokerData, smoker == 1)) ,lwd = 2, col = smokCol[2])
+
+
+
+beanplot(
+  agesmokerData[agesmokerData$age == 18 &
+                  agesmokerData$smoker == 0,]$charges,
+  agesmokerData[agesmokerData$age == 18 &
+                  agesmokerData$smoker == 1,]$charges,
+  at = c(1, 2),
+  col = list("#52796f","maroon"),
+  what = c(1, 1, 1, 0),
+  side = "both",
+  horizontal = F,
+  notch = F, 
+  outline = F,
+  axes = T,
+  names  = c("", ""),
+  ylab = "charges",
+  xlab = "nonsmoker:smoker"
+)
+legend(0.5,
+       50000,
+       c("non-smoker", "smoker"),
+       fill = smokCol)
+
+
