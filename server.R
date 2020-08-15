@@ -321,4 +321,33 @@ server <- function(input, output, session) {
 
   output$rmseText <- renderText(rmse)
 
+  predDF <-
+    reactive(
+      data.frame(
+        age = input$predage, 
+        bmi = input$predbmi, 
+        smoker = as.numeric(input$predsmoker)
+      )
+    )
+  predresult <- reactive(
+    predict(model, predDF(),se.fit = TRUE)
+  )
+  
+  output$predictCharges <- renderInfoBox(
+    infoBox(
+      "Charges", paste0(round(predresult()$fit, digits = 0),"$") , icon = icon("crosshairs"),
+      color = "teal", fill = TRUE,width = 5
+    )
+  ) 
+  output$predictError<- renderInfoBox(
+    infoBox(
+      "Variance", paste0(round(predresult()$se.fit, digits = 0),"$") , icon = icon("exclamation"),
+      color = "orange", fill = TRUE,width = 5
+    )
+  ) 
+  
+  output$predCharge <- renderText(round(predresult()$fit, digits = 0))
+  
+  
+  
 }

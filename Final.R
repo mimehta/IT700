@@ -265,7 +265,8 @@ Bob <- data.frame(age = 19,
                   bmi = 27.9,
                   children = 0,
                   smoker = 1,
-                  region = 2)
+                  region = 2,
+                  sex = 1)
 residualPlot(model_1, type = "rstandard")
 
 csvData$residuals <- csvData$charges - csvData$prediction
@@ -278,7 +279,7 @@ ggplot(data = csvData, aes(x = prediction, y = residuals)) +
   ggtitle("Residuals vs. Linear model prediction")
 
 print(paste0("Health care charges for Bob: ", round(predict(model_1, Bob), 2)))
-pr1 <- predict(model_1, Bob,se.fit = TRUE)
+pr1 <- predict(model_0, Bob,se.fit = TRUE)
 
 
 ## https://www.kaggle.com/ruslankl/health-care-cost-prediction-w-linear-regression

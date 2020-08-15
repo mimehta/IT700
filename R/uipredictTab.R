@@ -37,11 +37,12 @@ modelTab <- tabItem(
           sliderInput("predage", "Age:",min = min(csvData$age), max =  max(csvData$age),value = 18,step = 1)
         ),
         column( width = 6,
-          infoBoxOutput("predictCharges"),
-          infoBoxOutput("predictError"),
-          p("The prediction of the medical charges for the person with selected approx value is nnn."),
+          infoBoxOutput("predictCharges",width = 6),
+          infoBoxOutput("predictError",width = 6),
+        ),
+        column(width = 6,
+          p("The prediction of the medical charges for the person with selected approx value is ", strong(textOutput("predCharge", inline = TRUE)), "$."),
         )
-        
       )      
     )
   )
