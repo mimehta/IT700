@@ -18,3 +18,9 @@ chartMenu <- menuItem(
   menuSubItem("agechart",tabName = "ageChart"),
   menuSubItem("bmichart",tabName = "bmiChart")
 )
+
+predictmenu <- menuItem(
+  "Prediction",
+  tabName = "predicttab",
+  icon = icon("crosshairs")
+)

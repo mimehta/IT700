@@ -8,6 +8,7 @@ library(beanplot)
 
 genderCol <- c("#007ea7","#f27059")
 smokCol <- c("#52796f","maroon")
+smokText <- c("non-smoker","smoker")
 
 csvData <- read_csv("data/datasets_insurance.csv")
 corrData <- cor(csvData)
@@ -37,7 +38,35 @@ csvData$sex[csvData$sex == 1] <- "M"
 csvData$sex[csvData$sex == 0] <- "F"
 levels(csvData$sex) <- c("M","F")
 
-levels(csvData$smoker) <- c("0","1","Y","N")
-csvData$smoker[csvData$smoker == 1] <- "Y"
-csvData$smoker[csvData$smoker == 0] <- "N"
-levels(csvData$smoker) <- c("N","Y")
+modelData <- csvData
+csvData$intsmoker <- csvData$smoker 
+
+ levels(csvData$smoker) <- c("0","1","Y","N")
+ csvData$smoker[csvData$smoker == 1] <- "Y"
+ csvData$smoker[csvData$smoker == 0] <- "N"
+ levels(csvData$smoker) <- c("N","Y")
+
+formula <- as.formula("charges ~ smoker + age + bmi")
+model <- lm(formula, data = agesmokerData)
+r_sq <- summary(model)$r.squared
+
+prediction <- predict(model, newdata = agesmokerData)
+
+residuals <- agesmokerData$charges - prediction
+rmse <- sqrt(mean(residuals^2))
+summ <- summary(model)
+
+
+
+agesmokerData$prediction <- predict(model, newdata = agesmokerData)
+ggplot(agesmokerData, aes(x = prediction, y = charges)) + 
+  geom_point(color = "#007ea7", alpha = 0.7) + 
+  geom_abline(color = "red") +
+  ggtitle("Prediction vs. Real values")
+
+Bob <- data.frame(age = 19,
+                  bmi = 27.9,
+                  smoker = 1)
+# print(paste0("Health care charges for Bob: ", round(predict(model, Bob), 2)))
+
+

@@ -227,4 +227,63 @@ legend(0.5,
        c("non-smoker", "smoker"),
        fill = smokCol)
 
+#kaggle.com/ruslankl/health-care-cost-prediction-w-linear-regression
+n_train <- round(0.8 * nrow(csvData))
+train_indices <- sample(1:nrow(csvData), n_train)
+Data_train <- csvData[train_indices, ]
+Data_test <- csvData[-train_indices, ]
+formula_0 <- as.formula("charges ~ age + sex + bmi + children + smoker + region")
+model_0 <- lm(formula_0, data = csvData)
+summary(model_0)
+r_sq_0 <- summary(model_0)$r.squared
+#predict data on test set
+prediction_0 <- predict(model_0, newdata = Data_test)
+#calculating the residuals
+residuals_0 <- Data_test$charges - prediction_0
+#calculating Root Mean Squared Error
+rmse_0 <- sqrt(mean(residuals_0^2))
+
+Data_test$prediction <- predict(model_1, newdata = Data_test)
+ggplot(Data_test, aes(x = prediction, y = charges)) + 
+  geom_point(color = "blue", alpha = 0.7) + 
+  geom_abline(color = "red") +
+  ggtitle("Prediction vs. Real values")
+
+Data_train$prediction <- predict(model_1, newdata = Data_train)
+ggplot(Data_train, aes(x = prediction, y = charges)) + 
+  geom_point(color = "blue", alpha = 0.7) + 
+  geom_abline(color = "red") +
+  ggtitle("Prediction vs. Real values")
+
+csvData$prediction <- predict(model_1, newdata = csvData)
+ggplot(csvData, aes(x = prediction, y = charges)) + 
+  geom_point(color = "blue", alpha = 0.7) + 
+  geom_abline(color = "maroon") +
+  ggtitle("Prediction vs. Real values")
+
+Bob <- data.frame(age = 19,
+                  bmi = 27.9,
+                  children = 0,
+                  smoker = 1,
+                  region = 2)
+residualPlot(model_1, type = "rstandard")
+
+csvData$residuals <- csvData$charges - csvData$prediction
+
+plot(csvData$residuals, csvData$prediction)
+
+ggplot(data = csvData, aes(x = prediction, y = residuals)) +
+  geom_pointrange(aes(ymin = 0, ymax = residuals), color = "blue", alpha = 0.7) +
+  geom_hline(yintercept = 0, linetype = 3, color = "maroon") +
+  ggtitle("Residuals vs. Linear model prediction")
+
+print(paste0("Health care charges for Bob: ", round(predict(model_1, Bob), 2)))
+pr1 <- predict(model_1, Bob,se.fit = TRUE)
+
+
+## https://www.kaggle.com/ruslankl/health-care-cost-prediction-w-linear-regression
+## https://www.kaggle.com/grosvenpaul/regression-eda-and-statistics-tutorial
+## https://www.kaggle.com/sinaasappel/tutorial-multiple-regression
+## https://www.kaggle.com/jmullan/eda-and-linear-regression-prediction
+## https://www.kaggle.com/krohitm/linear-regression-modeling-and-assumptions
 

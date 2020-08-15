@@ -304,5 +304,21 @@ server <- function(input, output, session) {
            c("non-smoker", "smoker"),
            fill = smokCol)
   })
-  
+
+  output$modelBrief <- {
+    renderPrint(
+      summary(model)$coefficients[,1:2] )
+  }
+
+  output$modelChart <- {
+    renderPlot(
+      ggplot(agesmokerData, aes(x = prediction, y = charges)) + 
+      geom_point(color = "#007ea7", alpha = 0.7) + 
+      geom_abline(color = "red",size=2) +
+      ggtitle("Prediction vs. Actual Charges")
+    )
+  }
+
+  output$rmseText <- renderText(rmse)
+
 }
