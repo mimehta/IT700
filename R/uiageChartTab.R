@@ -23,7 +23,13 @@ ageChartTab <- tabItem(
                )
         ),
         column(width = 5,
-               sliderInput("age", "Age:",min = min(csvData$age), max =  max(csvData$age),value = 18),
+               sliderInput("age", "Age:",min = min(csvData$age), max =  max(csvData$age),value = 18,
+                animate=animationOptions(
+                  interval = 700,
+                  playButton = tags$div(HTML('<i class="fa fa-play fa-2x" style = "color:#007ea7;"></i>')),
+                  pauseButton = tags$div(HTML('<i class="fa fa-pause fa-2x" style = "color:#f27059;"></i>'))
+                ) 
+               ),
                plotOutput("ageSmoker"), 
                p("The chart shows the distribution of the charges for the group smoker and non-smoker with respect to the selected age.",
                  "Even at the very young age of 18, The charges of the non-smoker patients are much higher.",

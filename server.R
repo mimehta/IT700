@@ -348,6 +348,5 @@ server <- function(input, output, session) {
   
   output$predCharge <- renderText(round(predresult()$fit, digits = 0))
   
-  
-  
+
 }

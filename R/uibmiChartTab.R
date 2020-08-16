@@ -16,7 +16,13 @@ bmiChartTab <- tabItem(
                ),
         ),
         column(width = 5,
-               sliderInput("bmi", "BMI:",min = min(round(agesmokerData$bmi,digits = 0)), max =  48,value = 30,step = 1),
+               sliderInput("bmi", "BMI:",min = min(round(agesmokerData$bmi,digits = 0)), max =  48,value = 30,step = 1,
+                  animate=animationOptions(
+                    interval = 700,
+                    playButton = tags$div(HTML('<i class="fa fa-play fa-2x" style = "color:#007ea7;"></i>')),
+                    pauseButton = tags$div(HTML('<i class="fa fa-pause fa-2x" style = "color:#f27059;"></i>'))
+                  )
+                ),
                plotOutput("bmiSmoker"), 
         )
       )

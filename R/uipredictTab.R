@@ -1,4 +1,4 @@
-
+#library(intrval)
 
 modelTab <- tabItem(
   tabName = "predicttab",
@@ -33,8 +33,20 @@ modelTab <- tabItem(
       fluidRow(
         column( width = 6,
           checkboxInput("predsmoker", "Smoker", FALSE),
-          sliderInput("predbmi", "BMI:",min = min(round(agesmokerData$bmi,digits = 0)), max =  48,value = 30,step = 1),
-          sliderInput("predage", "Age:",min = min(csvData$age), max =  max(csvData$age),value = 18,step = 1)
+          sliderInput("predbmi", "BMI:",min = 24, max =  48,value = 30,step = 1,
+            animate=animationOptions(
+              interval = 700,
+              playButton = tags$div(HTML('<i class="fa fa-play fa-2x" style = "color:#007ea7;"></i>')),
+              pauseButton = tags$div(HTML('<i class="fa fa-pause fa-2x" style = "color:#f27059;"></i>'))
+            ) 
+          ),
+          sliderInput("predage", "Age:",min = min(csvData$age), max =  max(csvData$age),value = 18,step = 1,
+                animate=animationOptions(
+                  interval = 700,
+                  playButton = tags$div(HTML('<i class="fa fa-play fa-2x" style = "color:#007ea7;"></i>')),
+                  pauseButton = tags$div(HTML('<i class="fa fa-pause fa-2x" style = "color:#f27059;"></i>'))
+                ) 
+          )
         ),
         column( width = 6,
           infoBoxOutput("predictCharges",width = 6),
