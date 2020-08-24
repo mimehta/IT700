@@ -8,18 +8,18 @@ ageChartTab <- tabItem(
         column(width = 6,
                tabBox(width = 12,
                       tabPanel(title = "Gender", plotOutput("genscatter"), 
-                               p("No significant pattern or difference of charges with respect to the gender.")
+                               p("No significant pattern or difference of charges concerning gender.")
                       ),
                       tabPanel(title = "Smoker", plotOutput("smoscatter"), 
                                p("The smoker charges are significant higher than the non-smoker across age.")
                       )
                ),
-               p("The medical charges increase slightly with age. The average charges for 18 years old is $",
+               p("The medical charges increase slightly with age. The average charge for 18 years old is $",
                  strong(round(mean(agesmokerData[agesmokerData$age == 18,]$charges), digits = 0 ) ), 
-                 " and average charges for 60 years old is $",
+                 " and the average charge for 60 years old is $",
                  strong(round(mean(agesmokerData[agesmokerData$age == 60,]$charges), digits = 0 ) ), 
-                 ". The minimum medical charges also increase with the age irrespective of age. ",
-                 "The chart reveals three groups of charges, low charges consist of the non-smokers,and high charges consist of the smokers.",
+                 ". The minimum medical charge also increase with the age irrespective of age. ",
+                 "The chart reveals three groups of charge, low charges consist of the non-smokers, and high charges consist of the smokers.",
                )
         ),
         column(width = 5,

@@ -17,9 +17,9 @@ modelTab <- tabItem(
               "For example, the estimated coefficient of age is ", strong(259.55), ".",
               " This means that an increase in 1 year of age will result in an increase of 295.55 in the value of charges."),
             p(strong("Standard Error:"), "These are the standard errors of the coefficients.",
-              " It shows the average amount of the estimated coefficient of a parameter differs from the actual coefficient of parameter." ),
+              " It shows the average amount of the estimated coefficient of a parameter differs from the actual coefficient of a parameter." ),
             p("R-squared (R2) measures the proportion of variability, A high value of adjusted R-squared ",
-              strong(textOutput('rmseText',inline = TRUE)), "shows that more than 74% of variance in the data can be explained by the model." )
+              strong(textOutput('rmseText',inline = TRUE)), "shows that more than 74% of the variance in the data can be explained by the model." )
           ),
           column( width = 8,
             plotOutput("modelChart") ,
@@ -53,7 +53,7 @@ modelTab <- tabItem(
           infoBoxOutput("predictError",width = 6),
         ),
         column(width = 6,
-          p("The prediction of the medical charges for the person with selected approx value is ", strong(textOutput("predCharge", inline = TRUE)), "$."),
+          p("The prediction of the medical charges for the person with the selected parameters. approx value is ", strong(textOutput("predCharge", inline = TRUE)), "$."),
         )
       )      
     )

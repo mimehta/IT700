@@ -1,14 +1,14 @@
 bmiChartTab <- tabItem(
   tabName = "bmiChart",
-  box(width = 12, title = "Comparision of charges with bmi",collapsible = TRUE,
+  box(width = 12, title = "Comparision of charges with BMI",collapsible = TRUE,
       fluidRow(
         box(width = 12,
-            p("Let's check the impact on the charges with the bmi of the patients.")
+            p("Let's check the impact on the charges with the BMI of the patients.")
         ),
         column(width = 6,
                tabBox(width = 12,
                       tabPanel(title = "BMI", plotOutput("bmiscatter"), 
-                               p("No significant pattern or difference of charges with respect to the bmi")
+                               p("No significant pattern or difference of charges with respect to the BMI")
                       ),
                       tabPanel(title = "Smoker", plotOutput("bmismoscatter"), 
                                p("The smoker charges are significant higher than the non-smoker across BMI")
